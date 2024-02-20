@@ -1,0 +1,395 @@
+// import React, { useEffect, useState } from "react";
+// import EditIcon from "@mui/icons-material/Edit";
+// import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+// import { GridActionsCellItem } from "@mui/x-data-grid-pro";
+// import { Button, Card, Slide, Stack } from "@mui/material";
+// import LinearProgress from "@mui/material/LinearProgress";
+// import { DataGrid } from "@mui/x-data-grid";
+// import UserFormModalSaga from "../UserFormShow/UserFormModalSaga";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   clearEditRow,
+//   setEditRow,
+//   fetchUsersRequest,
+//   deleteUserRequest,
+// } from "../../Redux/Actions/userActionsData";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} />;
+// });
+
+// export default function ShowDataMainSaga(handleSubmit) {
+//   const [open, setOpen] = useState(false);
+//   const dispatch = useDispatch();
+//   const users = useSelector((state) => state.users || []);
+//   const loading = useSelector((state) => state.Loading);
+//   const editRow = useSelector((state) => state.editRow);
+//   const rowdata = useSelector((state) => state.rowData);
+
+//   const handleClose = () => {
+//     setOpen(false);
+//     dispatch(clearEditRow());
+//   };
+
+//   const columns = [
+//     { field: "_id", headerName: "ID", width: 180 },
+//     { field: "name", headerName: "Name", width: 180 },
+//     { field: "email", headerName: "Email", width: 180 },
+//     { field: "password", headerName: "Password", width: 250 },
+//     {
+//       field: "actions",
+//       type: "actions",
+//       headerName: "Actions",
+//       width: 100,
+//       cellClassName: "actions",
+//       getActions: ({ row }) => {
+//         // console.log("data::::::::::", row);
+//         return [
+//           <GridActionsCellItem
+//             icon={<EditIcon />}
+//             key={`edit-${row._id}`}
+//             label="Edit"
+//             onClick={() => handleEditClick(row)}
+//             color="inherit"
+//           />,
+//           <GridActionsCellItem
+//             icon={<DeleteIcon />}
+//             key={`delete-${row._id}`}
+//             label="Delete"
+//             onClick={() => handleDeleteClick(row._id)}
+//             color="inherit"
+//           />,
+//         ];
+//       },
+//     },
+//   ];
+
+//   const handleEditClick = (data) => {
+//     dispatch(setEditRow(data));
+//     setOpen(true);
+//   };
+
+//   useEffect(() => {
+//     dispatch(fetchUsersRequest());
+//   }, [dispatch]);
+
+//   const handleDeleteClick = (userId) => {
+//     dispatch(deleteUserRequest(userId));
+//   };
+//   function CustomLoadingOverlay() {
+//     return loading ? <LinearProgress /> : null;
+//   }
+
+//   return (
+//     <>
+//       <Stack direction="row" alignItems="center" justifyContent="end" m={5}>
+//         <Button
+//           variant="contained"
+//           onClick={() => {
+//             setOpen(true);
+//           }}
+//         >
+//           New User
+//         </Button>
+//       </Stack>
+//       {loading ? (
+//         // <div
+//         //   style={{
+//         //     display: "flex",
+//         //     justifyContent: "center",
+//         //     alignItems: "center",
+//         //     height: "100vh",
+//         //   }}
+//         // >
+//         //   <img src="/loader.gif" alt="" />
+//         // </div>
+
+//         <div
+//           style={{
+//             position: "absolute",
+//             top: 0,
+//             left: 0,
+//             width: "100%",
+//             height: "100%",
+//             backgroundColor: "rgba(255, 255, 255, 0.5)",
+//             display: "flex",
+//             justifyContent: "center",
+//             alignItems: "center",
+//             zIndex: 9999,
+//           }}
+//         >
+//           <div
+//             style={{
+//               backgroundColor: "rgba(255, 255, 255, 0.8)",
+//               padding: "20px",
+//               borderRadius: "10px",
+//             }}
+//           >
+//             <LinearProgress style={{ backgroundColor: "transparent" }} />
+//             <p>Loading...</p>
+//           </div>
+//         </div>
+//       ) : (
+//         <div style={{ margin: "auto", width: "80%", marginTop: "50px" }}>
+//           <Card
+//             style={{ height: 500, width: "100%", backgroundColor: "#ffffff" }}
+//             sx={{ boxShadow: 3, borderRadius: "16px" }}
+//           >
+//             <DataGrid
+//               rows={rowdata}
+//               columns={columns}
+//               pageSize={5}
+//               rowsPerPageOptions={[10]}
+//               loading={loading}
+//               components={{
+//                 LoadingOverlay: CustomLoadingOverlay,
+//               }}
+//             />
+//           </Card>
+//         </div>
+//       )}
+//       {open && (
+//         <UserFormModalSaga
+//           open={open}
+//           handleClose={handleClose}
+//           TransitionComponent={Transition}
+//           userData={editRow}
+//           handleUpdateData={handleSubmit}
+//         />
+//       )}
+//       <ToastContainer />
+//     </>
+//   );
+// }
+// // import styled from "@emotion/styled";
+// // import {
+// //   Button,
+// //   Dialog,
+// //   DialogContent,
+// //   DialogTitle,
+// //   Grid,
+// //   IconButton,
+// //   InputAdornment,
+// //   Slide,
+// // } from "@mui/material";
+// // import React, { useEffect, useState } from "react";
+// // import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+// // import VisibilityIcon from "@mui/icons-material/Visibility";
+// // import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+// // import SendIcon from "@mui/icons-material/Send";
+// // import DeleteIcon from "@mui/icons-material/Delete";
+// // import { useDispatch } from "react-redux";
+// // import {
+// //   updateUserRequest,
+// //   addUserRequest,
+// //   fetchUsersRequest,
+// // } from "../../Redux/Actions/userActionsData";
+// // import { toast, ToastContainer } from "react-toastify";
+// // import "react-toastify/dist/ReactToastify.css";
+
+// // const Transition = React.forwardRef(function Transition(props, ref) {
+// //   return <Slide direction="up" ref={ref} {...props} />;
+// // });
+// // const TextValidatorField = styled(TextValidator)(() => ({
+// //   width: "100%",
+// //   marginBottom: "16px",
+// // }));
+
+// // ValidatorForm.addValidationRule("namevalidationsrule", (value) => {
+// //   return /^[a-zA-Z\s]*$/.test(value);
+// // });
+
+// // ValidatorForm.addValidationRule("emailvalidationsrule", (value) => {
+// //   return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
+// // });
+
+// // function UserFormModalSaga({ open, handleClose, userData, handleUpdateData }) {
+// //   const [showPassword, setShowPassword] = useState(false);
+// //   const [data, setdata] = useState({
+// //     name: "",
+// //     email: "",
+// //     password: "",
+// //   });
+// //   const dispatch = useDispatch();
+
+// //   const handleChange = (e) => {
+// //     e.persist();
+// //     setdata({ ...data, [e.target.name]: e.target.value });
+// //   };
+
+// //   // const handleSubmit = (e) => {
+// //   //   if (userData && userData._id) {
+// //   //     dispatch(updateUserRequest({ _id: userData._id, ...data }));
+// //   //     // dispatch(fetchUsersRequest());
+
+// //   //   } else {
+// //   //     dispatch(addUserRequest(data));
+// //   //   }
+// //   //   handleClose();
+// //   //   // handleUpdateData(data);
+// //   // };
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     if (userData && userData._id) {
+// //       dispatch(updateUserRequest({ _id: userData._id, ...data }))
+// //         .then(() => {
+// //           toast.success("User updated successfully!");
+// //         })
+// //         .catch((error) => {
+// //           toast.error(`Error updating user: ${error.message}`);
+// //         });
+// //     } else {
+// //       dispatch(addUserRequest(data))
+// //         .then(() => {
+// //           toast.success("User added successfully!");
+// //         })
+// //         .catch((error) => {
+// //           toast.error(`Error adding user: ${error.message}`);
+// //         });
+// //     }
+// //     handleClose();
+// //   };
+// //   useEffect(() => {
+// //     if (userData) {
+// //       console.log("userData", userData);
+// //       setdata({
+// //         ...data,
+// //         name: userData?.name,
+// //         email: userData?.email,
+// //         password: userData?.password,
+// //         _id: userData?._id,
+// //       });
+// //     }
+// //   }, [userData]);
+
+// //   return (
+// //     <Dialog
+// //       open={open}
+// //       TransitionComponent={Transition}
+// //       keepMounted
+// //       fullWidth
+// //       maxWidth="sm"
+// //       onClose={handleClose}
+// //       aria-describedby="alert-dialog-slide-description"
+// //     >
+// //       <DialogTitle>{userData ? "Edit User" : "New User"}</DialogTitle>
+// //       <DialogContent>
+// //         <ValidatorForm
+// //           onSubmit={handleSubmit}
+// //           onError={() => null}
+// //           autoComplete="off"
+// //         >
+// //           <Grid container spacing={8}>
+// //             <Grid item lg={12} md={12} sm={12} xs={12} sx={{ mt: 2 }}>
+// //               <TextValidatorField
+// //                 type="text"
+// //                 name="name"
+// //                 id="standard-basic"
+// //                 value={data.name || ""}
+// //                 onChange={handleChange}
+// //                 validators={[
+// //                   "required",
+// //                   "minStringLength:3",
+// //                   "maxStringLength:50",
+// //                   "namevalidationsrule",
+// //                 ]}
+// //                 errorMessages={[
+// //                   "this field is required",
+// //                   "minimum length is 3",
+// //                   "maximum length is 50",
+// //                   "name is not use to number and special characters",
+// //                 ]}
+// //                 label=" Name "
+// //               />
+// //               <TextValidatorField
+// //                 type="email"
+// //                 name="email"
+// //                 id="standard-basic"
+// //                 value={data.email || ""}
+// //                 onChange={handleChange}
+// //                 validators={[
+// //                   "required",
+// //                   "isEmail",
+// //                   "minStringLength:5",
+// //                   "maxStringLength:50",
+// //                   "emailvalidationsrule",
+// //                 ]}
+// //                 errorMessages={[
+// //                   "this field is required",
+// //                   "email is not valid",
+// //                   "minimum length is 5",
+// //                   "maximum length is 50",
+// //                   "email is not use to special characters",
+// //                 ]}
+// //                 label="email"
+// //               />
+
+// //               <TextValidatorField
+// //                 name="password"
+// //                 label="Password"
+// //                 value={data.password || ""}
+// //                 onChange={handleChange}
+// //                 validators={["required", "minStringLength: 8"]}
+// //                 errorMessages={[
+// //                   "This field is required",
+// //                   "Password must be at least 8 characters long",
+// //                 ]}
+// //                 type={showPassword ? "text" : "password"}
+// //                 InputProps={{
+// //                   endAdornment: (
+// //                     <InputAdornment position="end">
+// //                       <IconButton
+// //                         onClick={() => setShowPassword(!showPassword)}
+// //                         edge="end"
+// //                       >
+// //                         {showPassword ? (
+// //                           <VisibilityIcon />
+// //                         ) : (
+// //                           <VisibilityOffIcon />
+// //                         )}
+// //                       </IconButton>
+// //                     </InputAdornment>
+// //                   ),
+// //                 }}
+// //               />
+// //             </Grid>
+// //           </Grid>
+
+// //           <div className="container">
+// //             <div className="row">
+// //               <div className="col-sm-6 mb-2">
+// //                 <Button
+// //                   color="error"
+// //                   variant="contained"
+// //                   type="button"
+// //                   fullWidth
+// //                   onClick={() => {
+// //                     setdata("");
+// //                   }}
+// //                 >
+// //                   <DeleteIcon />
+// //                   <span> Clear</span>
+// //                 </Button>
+// //               </div>
+// //               <div className="col-sm-6 mb-2">
+// //                 <Button
+// //                   color="primary"
+// //                   variant="contained"
+// //                   type="submit"
+// //                   fullWidth
+// //                 >
+// //                   <SendIcon />
+// //                   <span>{userData ? "Update Item" : "Add Item"}</span>
+// //                 </Button>
+// //               </div>
+// //             </div>
+// //           </div>
+// //         </ValidatorForm>
+// //       </DialogContent>
+// //     </Dialog>
+// //   );
+// // }
+
+// // export default UserFormModalSaga;
