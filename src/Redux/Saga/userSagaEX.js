@@ -14,7 +14,7 @@ import {
 } from "../Actions/userActionsData";
 
 function* fetchUsersSaga() {
-  yield put(setLoading(true));
+  // yield put(setLoading(true));
   try {
     const response = yield axios.get(
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata"

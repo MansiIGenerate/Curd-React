@@ -18,7 +18,7 @@ import toastr from "toastr";
 import Swal from "sweetalert2";
 
 function* fetchUsersSaga() {
-  yield put(setLoading(true));
+  // yield put(setLoading(true));
   try {
     const response = yield axios.get(
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata"
@@ -38,7 +38,7 @@ function* fetchUsersSaga() {
 
 function* addUserSaga(actions) {
   // console.log("action.payload????????????????", actions);
-  yield put(setLoading(true));
+  // yield put(setLoading(true));
   try {
     const response = yield axios.post(
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata",
@@ -51,7 +51,7 @@ function* addUserSaga(actions) {
   } catch (error) {
     yield put(addUserfailure(actions.payload));
     console.error("Error adding user:", error);
-    toastr.error(error.message);
+    toastr.error(error.message, "not add data");
     yield put(setLoading(false));
   }
 }
@@ -63,14 +63,14 @@ function* updateUserSaga(action) {
       `https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata/${_id}`,
       userData
     );
-    yield put(updateUserSuccess());
+    // yield put(updateUserSuccess());
     yield put({ type: FETCH_USERS_REQUEST });
-    toastr.success("update data successful");
     yield put(setLoading(false));
+    toastr.success("update data successful");
   } catch (error) {
     yield put(updateUserfailure());
     console.error("Error updating user:", error);
-    toastr.error(error.message);
+    toastr.error(error.message, "not upadte data");
     yield put(setLoading(false));
   }
 }
@@ -86,9 +86,11 @@ function* deleteUserSaga(action) {
       `https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata/${action.payload}`
     );
     yield put({ type: FETCH_USERS_REQUEST });
+    yield put(setLoading(false));
     toastr.success("delete data successful");
   } catch (error) {
     yield put(deleteUserfailure);
+    yield put(setLoading(false));
     console.error("Error deleting user:", error);
   }
 }

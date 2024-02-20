@@ -28,17 +28,28 @@ const initialState = {
 const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USERS_REQUEST:
-    case ADD_USER_REQUEST:
-    case UPDATE_USER_REQUEST:
       return {
         ...state,
         Loading: true,
+        error: null,
+      };
+    case ADD_USER_REQUEST:
+      return {
+        ...state,
+        Loading: false,
+        error: null,
+      };
+    case UPDATE_USER_REQUEST:
+      return {
+        ...state,
+        Loading: false,
         error: null,
       };
 
     case DELETE_USER_REQUEST:
       return {
         ...state,
+        Loading: false,
         error: null,
       };
 
