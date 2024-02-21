@@ -13,18 +13,17 @@ import {
   addUserfailure,
   updateUserfailure,
   deleteUserfailure,
+  deleteUserSuccess,
+  fetchUsersRequest,
 } from "../Actions/userActionsData";
 import toastr from "toastr";
-import Swal from "sweetalert2";
 
 function* fetchUsersSaga() {
-  // yield put(setLoading(true));
   try {
     const response = yield axios.get(
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata"
     );
     const data = response.data.map((val, index) => {
-      val.id = index + 1;
       return val;
     });
     yield put(fetchUsersSuccess(data));
@@ -37,14 +36,11 @@ function* fetchUsersSaga() {
 }
 
 function* addUserSaga(actions) {
-  // console.log("action.payload????????????????", actions);
-  // yield put(setLoading(true));
   try {
     const response = yield axios.post(
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata",
       actions.payload
     );
-    console.log(" response.data", response.data);
     yield put(addUserSuccess(response.data));
     toastr.success("add data successful");
     yield put(setLoading(false));
@@ -56,15 +52,16 @@ function* addUserSaga(actions) {
   }
 }
 
-function* updateUserSaga(action) {
+function* updateUserSaga(actions) {
   try {
-    const { _id, ...userData } = action.payload;
-    yield axios.put(
+    const { _id, ...userData } = actions.payload;
+    const response = yield axios.put(
       `https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata/${_id}`,
       userData
     );
-    // yield put(updateUserSuccess());
-    yield put({ type: FETCH_USERS_REQUEST });
+    console.log("response::::::", response);
+    yield put(updateUserSuccess(response.data));
+    // yield put(fetchUsersRequest());
     yield put(setLoading(false));
     toastr.success("update data successful");
   } catch (error) {
@@ -75,23 +72,20 @@ function* updateUserSaga(action) {
   }
 }
 
-function* deleteUserSaga(action) {
+function* deleteUserSaga(actions) {
   try {
-    // yield call(Swal.fire, {
-    //   title: "Do you want to Delete?",
-    //   showCancelButton: true,
-    //   confirmButtonText: "Delete",
-    // });
-    yield axios.delete(
-      `https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata/${action.payload}`
+    const response = yield axios.delete(
+      `https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata/${actions.payload}`
     );
-    yield put({ type: FETCH_USERS_REQUEST });
+    yield put(deleteUserSuccess(response.data));
+    yield put(fetchUsersRequest());
     yield put(setLoading(false));
     toastr.success("delete data successful");
   } catch (error) {
-    yield put(deleteUserfailure);
-    yield put(setLoading(false));
+    yield put(deleteUserfailure());
     console.error("Error deleting user:", error);
+    toastr.error(error.message, "Failed to delete data");
+    yield put(setLoading(false));
   }
 }
 

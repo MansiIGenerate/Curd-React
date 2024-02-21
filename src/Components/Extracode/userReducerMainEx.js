@@ -9,7 +9,7 @@ import {
   DELETE_USER,
   SET_ROWDATA,
   ADD_USER_SUCCESS,
-} from "../Actions/userActionsData";
+} from "../../Redux/Actions/userActionsData";
 
 const initialState = {
   users: [],

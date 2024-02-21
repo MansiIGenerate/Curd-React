@@ -86,8 +86,8 @@ const usersReducer = (state = initialState, action) => {
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
-        users: state.users.map((user) =>
-          user.id === action.payload.id ? action.payload : user
+        rowData: state.rowData.map((user) =>
+          user._id === action.payload._id ? { ...action.payload } : user
         ),
         Loading: false,
         error: null,
@@ -108,6 +108,7 @@ const usersReducer = (state = initialState, action) => {
       };
 
     case SET_ROWDATA:
+      console.log("action.payload", action.payload);
       return {
         ...state,
         rowData: action.payload,

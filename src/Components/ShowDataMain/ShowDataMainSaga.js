@@ -3,7 +3,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { GridActionsCellItem } from "@mui/x-data-grid-pro";
 import { Button, Card, Slide, Stack } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
 import { DataGrid } from "@mui/x-data-grid";
 import UserFormModalSaga from "../UserFormShow/UserFormModalSaga";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +14,7 @@ import {
 } from "../../Redux/Actions/userActionsData";
 import "react-toastify/dist/ReactToastify.css";
 import CircularProgress from "@mui/material/CircularProgress";
+import Swal from "sweetalert2";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -23,11 +23,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function ShowDataMainSaga(handleSubmit) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users || []);
+  // const users = useSelector((state) => state.users || []);
   const loading = useSelector((state) => state.Loading);
   const editRow = useSelector((state) => state.editRow);
   const rowdata = useSelector((state) => state.rowData);
-
   const handleClose = () => {
     setOpen(false);
     dispatch(clearEditRow());
@@ -49,14 +48,12 @@ export default function ShowDataMainSaga(handleSubmit) {
         return [
           <GridActionsCellItem
             icon={<EditIcon />}
-            // key={`edit-${row._id}`}
             label="Edit"
             onClick={() => handleEditClick(row)}
             color="inherit"
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
-            // key={`delete-${row._id}`}
             label="Delete"
             onClick={() => handleDeleteClick(row._id)}
             color="inherit"
@@ -76,11 +73,16 @@ export default function ShowDataMainSaga(handleSubmit) {
   }, [dispatch]);
 
   const handleDeleteClick = (userId) => {
-    dispatch(deleteUserRequest(userId));
+    Swal.fire({
+      title: "Do you want to Delete?",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteUserRequest(userId));
+      }
+    });
   };
-  // function CustomLoadingOverlay() {
-  //   return loading ? <LinearProgress /> : null;
-  // }
   const CustomLoadingOverlay = () => {
     return (
       <div
@@ -133,6 +135,7 @@ export default function ShowDataMainSaga(handleSubmit) {
             rows={rowdata}
             columns={columns}
             pageSize={5}
+            getRowId={(row) => row._id}
             rowsPerPageOptions={[10]}
             loading={loading}
             components={{

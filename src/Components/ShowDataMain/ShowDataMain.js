@@ -123,7 +123,6 @@ export default function ShowDataMain() {
       .get("https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata")
       .then((r) => {
         let d = r.data.map((val, index) => {
-          val.id = index + 1;
           return val;
         });
         setRows(d);

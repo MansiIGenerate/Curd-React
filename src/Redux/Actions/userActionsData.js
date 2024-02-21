@@ -45,9 +45,9 @@ export const updateUserRequest = (user) => ({
   payload: user,
 });
 
-export const updateUserSuccess = (userData, userId) => ({
+export const updateUserSuccess = (data) => ({
   type: UPDATE_USER_SUCCESS,
-  payload: { userId, userData },
+  payload: data,
 });
 export const updateUserfailure = () => ({
   type: UPDATE_USER_FAILURE,

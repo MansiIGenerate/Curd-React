@@ -11,7 +11,7 @@ import {
   deleteUser,
   updateUser,
   addUserSuccess,
-} from "../Actions/userActionsData";
+} from "../../Redux/Actions/userActionsData";
 
 function* fetchUsersSaga() {
   // yield put(setLoading(true));
@@ -20,7 +20,6 @@ function* fetchUsersSaga() {
       "https://65c7118fe7c384aada6e2870.mockapi.io/mydata/mydata"
     );
     const data = response.data.map((val, index) => {
-      val.id = index + 1;
       return val;
     });
     // yield put({ type: SET_USERS, payload: response.data });
